@@ -20,9 +20,16 @@ class MainActivity : AppCompatActivity() {
 
         cargarPreferencias()?.let {
             editTextTextEmailAddress.setText(it)
+            if (it.isNotEmpty())
+                cbRecordar.isChecked = true
         }
 
-        cbRecordar.setOnClickListener {  }
+        cbRecordar.setOnClickListener {
+            if (!cbRecordar.isChecked){
+                // Borrar el contenido de sharedPreferences
+                guardarPreferencias("")
+            }
+        }
 
         bLogin.setOnClickListener {
             if (editTextTextEmailAddress.text.isEmpty()){
@@ -31,8 +38,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "El email debe contener una @ y un .", Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this, "Todo correcto", Toast.LENGTH_LONG).show()
-                    guardarPreferencias()
-
+                if (cbRecordar.isChecked)
+                    guardarPreferencias(editTextTextEmailAddress.text.toString())
             }
         }
     }
@@ -44,11 +51,13 @@ class MainActivity : AppCompatActivity() {
         return sharedPref.getString(TAG_USUARIO, "")
     }
 
-    private fun guardarPreferencias() {
+    private fun guardarPreferencias(string : String) {
         val sharedPref = getPreferences(Context.MODE_PRIVATE)
         with (sharedPref.edit()) {
-            putString(TAG_USUARIO, editTextTextEmailAddress.text.toString())
+            putString(TAG_USUARIO, string)
             commit()
         }
     }
+
+
 }
