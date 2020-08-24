@@ -5,6 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.cbellmont.neoland.datamodel.Preferencias
+import com.cbellmont.neoland.datamodel.user.User
+import com.cbellmont.neoland.sources.GetAllUsers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,8 +60,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             }
         }    }
 
-    fun downloadFinished() {
+    fun downloadFinished(users: List<User>) {
         CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                App.getDatabase(getApplication()).UserDao().deleteAll()
+                App.getDatabase(getApplication()).UserDao().insertAll(users)
+            }
             withContext(Dispatchers.Main) {
                 _mainActivityStatus.value = MainActivityStatus.FINISHED
             }

@@ -1,4 +1,4 @@
-package com.cbellmont.neoland
+package com.cbellmont.neoland.datamodel
 
 import android.content.Context
 

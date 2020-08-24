@@ -1,6 +1,8 @@
-package com.cbellmont.neoland
+package com.cbellmont.neoland.sources
 
 import android.util.Log
+import com.cbellmont.neoland.MainActivityViewModel
+import com.cbellmont.neoland.datamodel.user.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -46,9 +48,10 @@ class GetAllUsers {
                                 list.forEach {
                                     Log.w(GetAllUsers::class.simpleName, it.email + it.name )
                                 }
+                                viewModel.downloadFinished(list)
+
                             }
                         }
-                        viewModel.downloadFinished()
                     }
                 }
             })

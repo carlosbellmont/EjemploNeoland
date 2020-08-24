@@ -1,4 +1,4 @@
-package com.cbellmont.neoland
+package com.cbellmont.neoland.datamodel.user
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -28,4 +28,7 @@ interface UserDao {
 
     @Delete
     fun delete(User: User)
+
+    @Query("DELETE FROM User")
+    fun deleteAll()
 }
