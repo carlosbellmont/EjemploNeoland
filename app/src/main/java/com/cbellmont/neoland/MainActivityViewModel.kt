@@ -38,13 +38,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-
-    private fun loadUsers(){
-        viewModelScope.launch {
-            GetAllUsers.send(this@MainActivityViewModel)
-        }
-    }
-
     fun downloadStarted() {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Main) {
@@ -73,8 +66,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun downloadData() {
-        downloadStarted()
-        loadUsers()
+        viewModelScope.launch {
+            GetAllUsers.send(this@MainActivityViewModel)
+        }
     }
 
     fun cargarPreferencias() : String? {

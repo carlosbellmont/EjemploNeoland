@@ -1,5 +1,6 @@
 package com.cbellmont.neoland
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -37,9 +38,10 @@ class MainActivity : AppCompatActivity() {
                         when (it) {
                             MainActivityViewModel.MainActivityStatus.FINISHED -> {
                                 hideLoading()
-                                startActivity(ActivityMenu.getIntent(this@MainActivity))
+                                startActivity(MenuActivity.getIntent(this@MainActivity))
                             }
                             MainActivityViewModel.MainActivityStatus.WAITING -> {
+                                Toast.makeText(this@MainActivity, "Ha habido un error en la descarga", Toast.LENGTH_LONG).show()
                                 hideLoading()
                             }
                             MainActivityViewModel.MainActivityStatus.LOADING -> {
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
         cbRecordar.setOnClickListener {
             if (!cbRecordar.isChecked){
                 viewModel.guardarPreferencias("")
@@ -72,8 +75,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun showLoading(){
         progressBar.visibility = View.VISIBLE

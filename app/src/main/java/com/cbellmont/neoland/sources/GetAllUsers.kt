@@ -1,6 +1,7 @@
 package com.cbellmont.neoland.sources
 
 import android.util.Log
+import com.cbellmont.neoland.App
 import com.cbellmont.neoland.MainActivityViewModel
 import com.cbellmont.neoland.datamodel.user.User
 import com.google.gson.Gson
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 
 
 class GetAllUsers {
@@ -32,11 +34,12 @@ class GetAllUsers {
                 override fun onResponse(call: Call, response: Response) {
                     CoroutineScope(Dispatchers.IO).launch {
                         val bodyInString = response.body?.string()
-                        bodyInString?.let {
-                            Log.w(GetAllUsers::class.simpleName, bodyInString)
-                            val JsonObject = JSONObject(bodyInString)
+                        bodyInString?.let { it ->
+                            Log.w(GetAllUsers::class.simpleName, it)
+                            try {
+                            val jsonObject = JSONObject(it)
 
-                            val results = JsonObject.optJSONArray("results")
+                            val results = jsonObject.optJSONArray("results")
                             results?.let {
                                 Log.w(GetAllUsers::class.simpleName, results.toString())
                                 val gson = Gson()
@@ -45,11 +48,15 @@ class GetAllUsers {
 
                                 val list = gson.fromJson<List<User>>(results.toString(), itemType)
 
-                                list.forEach {
-                                    Log.w(GetAllUsers::class.simpleName, it.email + it.name )
+                                list.forEach { user ->
+                                    user.bootcampId = App.getDatabase(viewModel.getApplication()).BootcampDao().getRandom().id
                                 }
                                 viewModel.downloadFinished(list)
 
+                            }
+                            } catch (e : Exception) {
+                                Log.e("errorGetAllUsers", "La página web no ha respondido bien")
+                                viewModel.downloadData()
                             }
                         }
                     }
