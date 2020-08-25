@@ -1,64 +1,86 @@
 package com.cbellmont.neoland
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        const val TAG_USUARIO = "TAG_USUARIO"
-    }
+    private lateinit var viewModel : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel = ViewModelProvider(this, AndroidViewModelFactory(application)).get(MainActivityViewModel::class.java)
 
         ivLogo.setImageResource(R.mipmap.logo_neoland)
         ivTexto.setImageResource(R.mipmap.texto_neoland)
 
-        cargarPreferencias()?.let {
-            if (it.isNotEmpty()){
-                cbRecordar.isChecked = true
-            }
+        viewModel.cargarPreferencias()?.let {
             editTextTextEmailAddress.setText(it)
+            if (it.isNotEmpty())
+                cbRecordar.isChecked = true
         }
 
+        viewModel.mainActivityStatus.observe(this, {
+            CoroutineScope(Dispatchers.Main).launch {
+                withContext(Dispatchers.Main) {
+                    viewModel.mainActivityStatus.value?.let {
+                        when (it) {
+                            MainActivityViewModel.MainActivityStatus.FINISHED -> {
+                                hideLoading()
+                                startActivity(MenuActivity.getIntent(this@MainActivity))
+                            }
+                            MainActivityViewModel.MainActivityStatus.WAITING -> {
+                                Toast.makeText(this@MainActivity, "Ha habido un error en la descarga", Toast.LENGTH_LONG).show()
+                                hideLoading()
+                            }
+                            MainActivityViewModel.MainActivityStatus.LOADING -> {
+                                showLoading()
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         cbRecordar.setOnClickListener {
-            if (!cbRecordar.isChecked) borrarPreferencias()
+            if (!cbRecordar.isChecked){
+                viewModel.guardarPreferencias("")
+            }
         }
 
         bLogin.setOnClickListener {
-            if (editTextTextEmailAddress.text.isEmpty()){
-                Toast.makeText(this, "El email no debe estar vacio", Toast.LENGTH_LONG).show()
-            } else if (!editTextTextEmailAddress.text.contains("@") || !editTextTextEmailAddress.text.contains(".")) {
-                Toast.makeText(this, "El email debe contener una @ y un .", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Todo correcto", Toast.LENGTH_LONG).show()
-                if (cbRecordar.isChecked){
-                    guardarPreferencias(editTextTextEmailAddress.text.toString())
+            if (viewModel.isValidEmail(editTextTextEmailAddress.text.toString())) {
+                CoroutineScope(Dispatchers.IO).launch{
+                    viewModel.downloadData()
+                    viewModel.guardarPreferencias(editTextTextEmailAddress.text.toString())
                 }
-                // No debes poner un else borrarPreferencias() ya que de ese modo solamente sería posible borrar el email poniendo otro email correcto.
+            } else {
+                Toast.makeText(this,
+                    viewModel.getErrorFromEmail(editTextTextEmailAddress.text.toString())
+                        ?.let { it1 ->
+                            getString(it1)
+                        }, Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
 
-    private fun borrarPreferencias(){
-        guardarPreferencias("")
+    private fun showLoading(){
+        progressBar.visibility = View.VISIBLE
     }
 
-    private fun cargarPreferencias() : String? {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        return sharedPref.getString(TAG_USUARIO, "")
-    }
-
-    private fun guardarPreferencias(usuario : String) {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        with (sharedPref.edit()) {
-            putString(TAG_USUARIO, usuario)
-            commit()
-        }
+    private fun hideLoading(){
+        progressBar.visibility = View.GONE
     }
 }
