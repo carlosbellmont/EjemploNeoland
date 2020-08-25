@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_city"
+        android:icon="@mipmap/city"
+        android:title="@string/menu_city" />
+    <item
+        android:id="@+id/navigation_bootcamp"
+        android:icon="@mipmap/bootcamp"
+        android:title="@string/menu_bootcampt" />
+
+
+</menu>

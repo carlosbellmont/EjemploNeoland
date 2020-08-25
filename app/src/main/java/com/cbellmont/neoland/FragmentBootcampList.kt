@@ -11,26 +11,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FragmentCampusList : Fragment() {
+class FragmentBootcampList : Fragment() {
 
     companion object {
-        fun getFragment(): FragmentCampusList {
-            return FragmentCampusList()
+        fun getFragment(): FragmentBootcampList {
+            return FragmentBootcampList()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_campus_list, container, false)
+        return inflater.inflate(R.layout.fragment_bootcamp_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.IO).launch {
             activity?.application?.let { application ->
-                val lista = App.getDatabase(application).CampusDao().getAll()
+                val lista = App.getDatabase(application).BootcampDao().getAll()
                 withContext(Dispatchers.Main){
-                    lista.forEach {campus ->
-                        textView.append(campus.name)
+                    lista.forEach {bootcamp ->
+                        textView.append(bootcamp.name)
                     }
                 }
             }

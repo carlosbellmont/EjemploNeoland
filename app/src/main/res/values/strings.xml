@@ -5,5 +5,8 @@
     <string name="main_email_fail_empty">El email no debe estar vacio</string>
     <string name="main_email_fail_ar">"El email debe contener una \"@\""</string>
     <string name="main_email_fail_dot">"El email debe contener un \".\""</string>
+    <string name="cb_login">Recordar usuario?</string>
+    <string name="menu_bootcampt">Bootcamp</string>
+    <string name="menu_city">City</string>
 
 </resources>
