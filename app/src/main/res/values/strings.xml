@@ -7,6 +7,6 @@
     <string name="main_email_fail_dot">"El email debe contener un \".\""</string>
     <string name="cb_login">Recordar usuario?</string>
     <string name="menu_bootcampt">Bootcamp</string>
-    <string name="menu_city">City</string>
+    <string name="menu_campus">Campus</string>
 
 </resources>

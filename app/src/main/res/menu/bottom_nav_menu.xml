@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_city"
-        android:icon="@mipmap/city"
-        android:title="@string/menu_city" />
+        android:id="@+id/navigation_campus"
+        android:icon="@mipmap/campus"
+        android:title="@string/menu_campus" />
     <item
         android:id="@+id/navigation_bootcamp"
         android:icon="@mipmap/bootcamp"
         android:title="@string/menu_bootcampt" />
-
 
 </menu>

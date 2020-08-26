@@ -51,7 +51,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             withContext(Dispatchers.Main) {
                 _mainActivityStatus.value = MainActivityStatus.WAITING
             }
-        }    }
+        }
+    }
 
     fun downloadFinished(users: List<User>) {
         CoroutineScope(Dispatchers.Main).launch {

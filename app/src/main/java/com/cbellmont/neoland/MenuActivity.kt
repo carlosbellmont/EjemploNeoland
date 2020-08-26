@@ -23,16 +23,15 @@ class MenuActivity : AppCompatActivity() {
         navigationButton.setOnNavigationItemSelectedListener {
             return@setOnNavigationItemSelectedListener when (it.itemId) {
                 R.id.navigation_bootcamp -> {
-                    showFragment(FragmentBootcampList())
+                    showFragment(FragmentBootcampList.getFragment())
                     true
                 }
-                R.id.navigation_city -> {
-                    showFragment(FragmentCampusList())
+                R.id.navigation_campus -> {
+                    showFragment(FragmentCampusList.getFragment())
                     true
                 }
                 else -> false
             }
-
         }
     }
 
