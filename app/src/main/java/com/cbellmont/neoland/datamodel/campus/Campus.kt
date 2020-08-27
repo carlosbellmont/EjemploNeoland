@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Campus (
-    val name : String,
+    val campusName : String,
     val image : Int
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id = 0
+    var campusId = 0
 }

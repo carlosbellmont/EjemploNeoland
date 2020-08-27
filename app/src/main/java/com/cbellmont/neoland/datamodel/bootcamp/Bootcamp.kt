@@ -1,22 +1,22 @@
 package com.cbellmont.neoland.datamodel.bootcamp
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.cbellmont.neoland.datamodel.campus.Campus
 
-@Entity(foreignKeys = arrayOf(
-    ForeignKey(entity = Campus::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("campusId"),
-        onDelete = ForeignKey.SET_NULL),
-    ))
+@Entity(foreignKeys = [ForeignKey(entity = Campus::class,
+    parentColumns = arrayOf("campusId"),
+    childColumns = arrayOf("fkCampusId"),
+    onDelete = ForeignKey.SET_NULL)]
+)
 data class Bootcamp (
-    val name : String,
+    val bootcampName : String,
     val about : String,
-    var campusId : Int? = null
+    var fkCampusId : Int? = null
 ) {
 
     @PrimaryKey(autoGenerate = true)
-    var id = 0
+    var bootcampId = 0
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.cbellmont.neoland.datamodel.BootcampWithCampus
 
 
 @Dao
@@ -19,4 +20,8 @@ interface BootcampDao {
 
     @Insert
     fun insertAll(listCampus: List<Bootcamp>)
+
+    //@Query("SELECT * FROM bootcamp INNER JOIN campus ON bootcamp.campusId = campus.id WHERE bootcamp.id = :id")
+    @Query("SELECT * FROM bootcamp INNER JOIN campus ON bootcamp.fkCampusId = campus.campusId")
+    fun getBootcampWithCampusLive(): LiveData<List<BootcampWithCampus>>
 }

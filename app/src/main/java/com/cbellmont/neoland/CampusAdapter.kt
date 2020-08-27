@@ -32,7 +32,7 @@ class CampusAdapter : RecyclerView.Adapter<CampusAdapter.CampusViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CampusViewHolder, position: Int) {
-        holder.tvCampus.text = campus[position].name
+        holder.tvCampus.text = campus[position].campusName
         holder.imCampus.setImageResource(campus[position].image)
     }
 

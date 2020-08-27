@@ -49,13 +49,14 @@ class GetAllUsers {
                                 val list = gson.fromJson<List<User>>(results.toString(), itemType)
 
                                 list.forEach { user ->
-                                    user.bootcampId = App.getDatabase(viewModel.getApplication()).BootcampDao().getRandom().id
+                                    user.fkBootcampId = App.getDatabase(viewModel.getApplication()).BootcampDao().getRandom().bootcampId
                                 }
                                 viewModel.downloadFinished(list)
 
                             }
                             } catch (e : Exception) {
                                 Log.e("errorGetAllUsers", "La página web no ha respondido bien")
+                                e.printStackTrace()
                                 viewModel.downloadData()
                             }
                         }

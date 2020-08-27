@@ -3,19 +3,18 @@ package com.cbellmont.neoland
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cbellmont.neoland.datamodel.BootcampWithCampus
 import com.cbellmont.neoland.datamodel.bootcamp.Bootcamp
-import com.cbellmont.neoland.datamodel.campus.Campus
 
 class BootcampAdapter : RecyclerView.Adapter<BootcampAdapter.BootcampViewHolder>() {
 
-    private var bootcamps = listOf<Bootcamp>()
+    private var bootcamps = listOf<BootcampWithCampus>()
 
     class BootcampViewHolder(root: View, var tvName: TextView, var tvAbout: TextView) : RecyclerView.ViewHolder(root)
 
-    fun updateBootcamps(bootcamps : List<Bootcamp>){
+    fun updateBootcamps(bootcamps : List<BootcampWithCampus>){
         this.bootcamps = bootcamps
         notifyDataSetChanged()
     }
@@ -33,8 +32,8 @@ class BootcampAdapter : RecyclerView.Adapter<BootcampAdapter.BootcampViewHolder>
     }
 
     override fun onBindViewHolder(holder: BootcampViewHolder, position: Int) {
-        holder.tvName.text = bootcamps[position].name
-        holder.tvAbout.text = bootcamps[position].about
+        holder.tvName.text = String.format("%s (%s)",bootcamps[position].bootcamp.bootcampName, bootcamps[position].campus.campusName)
+        holder.tvAbout.text = bootcamps[position].bootcamp.about
     }
 
 }

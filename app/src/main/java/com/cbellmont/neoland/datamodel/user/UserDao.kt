@@ -11,7 +11,7 @@ interface UserDao {
     @Query("SELECT * FROM User")
     fun getAllLive(): LiveData<List<User>>
 
-    @Query("SELECT * FROM User WHERE uid IN (:UsersId)")
+    @Query("SELECT * FROM User WHERE userId IN (:UsersId)")
     fun loadAllByIds(UsersId: IntArray): List<User>
 
     @Query("SELECT * FROM User WHERE name LIKE (:nombreUser)")

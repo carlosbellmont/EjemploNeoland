@@ -2,17 +2,19 @@ package com.cbellmont.neoland
 
 
 import android.app.Application
-import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cbellmont.neoland.datamodel.AppDatabase
 import com.cbellmont.neoland.datamodel.bootcamp.Bootcamp
 import com.cbellmont.neoland.datamodel.campus.Campus
+import com.facebook.stetho.Stetho
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 
 class App : Application() {
@@ -52,12 +54,12 @@ class App : Application() {
                                 Bootcamp("Java", "Todo sobre Java"),
                                 Bootcamp("FullStack", "Todo sobre todo")
                             )
-                            bootcampList.forEach{ bootcamp ->
-                                campusListDb?.forEach { campus ->
-                                    if(bootcamp.id != campus.id)
-                                        bootcamp.campusId = campus.id
+                            campusListDb?.let {
+                                bootcampList.forEach{ bootcamp ->
+                                    bootcamp.fkCampusId = it[Random.nextInt(it.size)].campusId
                                 }
                             }
+
                             App.db?.BootcampDao()?.insertAll(bootcampList)
 
                         }
@@ -72,6 +74,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         getDatabase(this)
+
+        val initializerBuilder = Stetho.newInitializerBuilder(this)
+        initializerBuilder.enableWebKitInspector(
+            Stetho.defaultInspectorModulesProvider(this)
+        )
+        Stetho.initialize(initializerBuilder.build())
     }
 
 }

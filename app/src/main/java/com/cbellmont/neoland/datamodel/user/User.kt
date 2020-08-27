@@ -9,8 +9,8 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(foreignKeys = arrayOf(
     ForeignKey(entity = Bootcamp::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("bootcampId"),
+        parentColumns = arrayOf("bootcampId"),
+        childColumns = arrayOf("fkBootcampId"),
         onDelete = ForeignKey.SET_NULL),
     ))
 
@@ -23,8 +23,8 @@ data class User(
     var picture: Picture,
 ) {
     @PrimaryKey(autoGenerate = true)
-    var uid = 0
-    var bootcampId : Int? = null
+    var userId = 0
+    var fkBootcampId : Int? = null
 }
 
 data class Name (
