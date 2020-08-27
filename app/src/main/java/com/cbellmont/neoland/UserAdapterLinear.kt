@@ -9,20 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cbellmont.neoland.datamodel.user.UserMostrable
 import com.squareup.picasso.Picasso
 
-
-class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapterLinear : RecyclerView.Adapter<UserAdapterLinear.UserViewHolder>(), Updatable {
 
     private var users = listOf<UserMostrable>()
 
     class UserViewHolder(root: View, var tvName: TextView, var tvEmail: TextView, var imFoto: ImageView) : RecyclerView.ViewHolder(root)
 
-    fun updateData(users : List<UserMostrable>){
+    override fun updateData(users : List<UserMostrable>){
         this.users = users
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_item_user, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_item_user_linear, parent, false)
         val tvName = view.findViewById<TextView>(R.id.tvName)
         val tvEmail = view.findViewById<TextView>(R.id.tvEmail)
         val ivFoto = view.findViewById<ImageView>(R.id.ivFoto)

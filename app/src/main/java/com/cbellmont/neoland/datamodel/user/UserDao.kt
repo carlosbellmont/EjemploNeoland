@@ -36,7 +36,7 @@ interface UserDao {
     @Query("DELETE FROM User")
     fun deleteAll()
 
-    @Query("SELECT * FROM User INNER JOIN Bootcamp ON user.fkBootcampId = bootcamp.bootcampId WHERE bootcamp.fkCampusId = :campusId")
+    @Query("SELECT * FROM User INNER JOIN Bootcamp ON User.fkBootcampId = Bootcamp.bootcampId WHERE Bootcamp.fkCampusId = :campusId")
     fun getByCampusId(campusId : Int): LiveData<List<UserWithBootcamp>>
 
 }

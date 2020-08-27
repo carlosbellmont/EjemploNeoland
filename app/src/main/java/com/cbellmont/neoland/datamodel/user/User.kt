@@ -15,8 +15,6 @@ interface UserMostrable {
 
 }
 
-
-
 @Entity(foreignKeys = arrayOf(
     ForeignKey(entity = Bootcamp::class,
         parentColumns = arrayOf("bootcampId"),
@@ -37,7 +35,7 @@ data class User(
     var fkBootcampId : Int? = null
 
     override fun getNombreEnString() : String {
-        return String.format("%s (%s)", name.name, name.surname)
+        return String.format("%s %s", name.name, name.surname)
     }
 
     override fun getFotoUrl() : String {
