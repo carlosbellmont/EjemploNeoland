@@ -1,6 +1,5 @@
 package com.cbellmont.neoland.datamodel.bootcamp
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey

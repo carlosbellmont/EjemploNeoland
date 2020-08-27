@@ -17,7 +17,7 @@ import java.lang.Exception
 
 class GetAllUsers {
     companion object {
-        private const val URL = "https://randomuser.me/api/?results=10"
+        private const val URL = "https://randomuser.me/api/?results=50"
 
         fun send(viewModel: MainActivityViewModel) {
             val client = OkHttpClient()

@@ -12,7 +12,7 @@ class CampusAdapter : RecyclerView.Adapter<CampusAdapter.CampusViewHolder>() {
 
     private var campus = listOf<Campus>()
 
-    class CampusViewHolder(root: View, var tvCampus: TextView, var imCampus: ImageView) : RecyclerView.ViewHolder(root)
+    class CampusViewHolder(var root: View, var tvCampus: TextView, var imCampus: ImageView) : RecyclerView.ViewHolder(root)
 
     fun updateCampus(campus : List<Campus>){
         this.campus = campus
@@ -34,6 +34,9 @@ class CampusAdapter : RecyclerView.Adapter<CampusAdapter.CampusViewHolder>() {
     override fun onBindViewHolder(holder: CampusViewHolder, position: Int) {
         holder.tvCampus.text = campus[position].campusName
         holder.imCampus.setImageResource(campus[position].image)
+        holder.root.setOnClickListener {
+            it.context.startActivity(UsersActivity.getIntent(it.context, campus[position].campusId, UsersActivity.UsersActivityType.CAMPUS))
+        }
     }
 
 }

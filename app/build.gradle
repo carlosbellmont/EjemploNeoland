@@ -47,5 +47,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.5"
     kapt "androidx.lifecycle:lifecycle-compiler:2.2.0"
     implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }

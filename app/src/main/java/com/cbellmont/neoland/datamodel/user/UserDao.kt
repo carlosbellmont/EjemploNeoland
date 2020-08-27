@@ -2,6 +2,7 @@ package com.cbellmont.neoland.datamodel.user
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.cbellmont.neoland.datamodel.UserWithBootcamp
 
 @Dao
 interface UserDao {
@@ -13,6 +14,9 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE userId IN (:UsersId)")
     fun loadAllByIds(UsersId: IntArray): List<User>
+
+    @Query("SELECT * FROM User WHERE fkBootcampId  = :bootcampId")
+    fun getByBootcampId(bootcampId : Int): LiveData<List<User>>
 
     @Query("SELECT * FROM User WHERE name LIKE (:nombreUser)")
     fun loadAllByTitle(nombreUser: String): List<User>
@@ -31,4 +35,8 @@ interface UserDao {
 
     @Query("DELETE FROM User")
     fun deleteAll()
+
+    @Query("SELECT * FROM User INNER JOIN Bootcamp ON user.fkBootcampId = bootcamp.bootcampId WHERE bootcamp.fkCampusId = :campusId")
+    fun getByCampusId(campusId : Int): LiveData<List<UserWithBootcamp>>
+
 }

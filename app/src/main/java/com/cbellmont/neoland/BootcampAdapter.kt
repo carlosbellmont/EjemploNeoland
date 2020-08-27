@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cbellmont.neoland.datamodel.BootcampWithCampus
-import com.cbellmont.neoland.datamodel.bootcamp.Bootcamp
 
 class BootcampAdapter : RecyclerView.Adapter<BootcampAdapter.BootcampViewHolder>() {
 
     private var bootcamps = listOf<BootcampWithCampus>()
 
-    class BootcampViewHolder(root: View, var tvName: TextView, var tvAbout: TextView) : RecyclerView.ViewHolder(root)
+    class BootcampViewHolder(var root: View, var tvName: TextView, var tvAbout: TextView) : RecyclerView.ViewHolder(root)
 
     fun updateBootcamps(bootcamps : List<BootcampWithCampus>){
         this.bootcamps = bootcamps
@@ -32,8 +31,11 @@ class BootcampAdapter : RecyclerView.Adapter<BootcampAdapter.BootcampViewHolder>
     }
 
     override fun onBindViewHolder(holder: BootcampViewHolder, position: Int) {
-        holder.tvName.text = String.format("%s (%s)",bootcamps[position].bootcamp.bootcampName, bootcamps[position].campus.campusName)
+        holder.tvName.text = String.format("%s (%s)", bootcamps[position].bootcamp.bootcampName, bootcamps[position].campus.campusName)
         holder.tvAbout.text = bootcamps[position].bootcamp.about
+        holder.root.setOnClickListener {
+            it.context.startActivity(UsersActivity.getIntent(it.context, bootcamps[position].bootcamp.bootcampId, UsersActivity.UsersActivityType.BOOTCAMP))
+        }
     }
 
 }
