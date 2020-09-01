@@ -16,4 +16,7 @@ interface CampusDao {
 
     @Insert
     fun insertAll(listCampus: List<Campus>)
+
+    @Insert
+    fun insert(listCampus: Campus)
 }

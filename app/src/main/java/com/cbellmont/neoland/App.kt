@@ -3,6 +3,7 @@ package com.cbellmont.neoland
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -10,6 +11,8 @@ import com.cbellmont.neoland.datamodel.AppDatabase
 import com.cbellmont.neoland.datamodel.bootcamp.Bootcamp
 import com.cbellmont.neoland.datamodel.campus.Campus
 import com.facebook.stetho.Stetho
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +23,9 @@ import kotlin.random.Random
 class App : Application() {
 
     companion object {
+        val TAG: String = App::class.java.name
+
+
         private var db : AppDatabase? = null
 
         fun getDatabase(application: Application): AppDatabase {
@@ -80,6 +86,17 @@ class App : Application() {
             Stetho.defaultInspectorModulesProvider(this)
         )
         Stetho.initialize(initializerBuilder.build())
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result?.token
+                Log.d(TAG, "El token es =  $token")
+            })
+
     }
 
 }

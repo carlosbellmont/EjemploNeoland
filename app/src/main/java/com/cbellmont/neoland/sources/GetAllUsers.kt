@@ -4,6 +4,7 @@ import android.util.Log
 import com.cbellmont.neoland.App
 import com.cbellmont.neoland.MainActivityViewModel
 import com.cbellmont.neoland.datamodel.user.User
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -55,6 +56,9 @@ class GetAllUsers {
 
                             }
                             } catch (e : Exception) {
+                                FirebaseCrashlytics.getInstance().setCustomKey("errorGetAllUsers", "La página web no ha respondido bien");
+                                FirebaseCrashlytics.getInstance().recordException(e)
+
                                 Log.e("errorGetAllUsers", "La página web no ha respondido bien")
                                 e.printStackTrace()
                                 viewModel.downloadData()

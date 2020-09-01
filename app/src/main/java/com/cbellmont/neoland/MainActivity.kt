@@ -2,6 +2,7 @@ package com.cbellmont.neoland
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,14 +14,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        val TAG: String = MainActivity::class.java.name
+        const val EXTRA_1 : String = "Extra1"
+        const val EXTRA_2 : String = "Extra2"
+
+    }
     private lateinit var viewModel : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProvider(this, AndroidViewModelFactory(application)).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this, AndroidViewModelFactory(application)).get(
+            MainActivityViewModel::class.java
+        )
+
+        intent.extras?.let {
+            Log.d(TAG, "He recibido del intent que contiene: ${it.getString(EXTRA_1)} ${it.getString(EXTRA_2)}")
+        }
 
         ivLogo.setImageResource(R.mipmap.logo_neoland)
         ivTexto.setImageResource(R.mipmap.texto_neoland)
@@ -41,7 +55,11 @@ class MainActivity : AppCompatActivity() {
                                 startActivity(MenuActivity.getIntent(this@MainActivity))
                             }
                             MainActivityViewModel.MainActivityStatus.WAITING -> {
-                                Toast.makeText(this@MainActivity, "Ha habido un error en la descarga", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Ha habido un error en la descarga",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 hideLoading()
                             }
                             MainActivityViewModel.MainActivityStatus.LOADING -> {
@@ -66,7 +84,8 @@ class MainActivity : AppCompatActivity() {
                     viewModel.guardarPreferencias(editTextTextEmailAddress.text.toString())
                 }
             } else {
-                Toast.makeText(this,
+                Toast.makeText(
+                    this,
                     viewModel.getErrorFromEmail(editTextTextEmailAddress.text.toString())
                         ?.let { it1 ->
                             getString(it1)
